@@ -1,0 +1,71 @@
+Script
+
+#use "Libs/SCI/Sys"
+#use "Libs/SCI/Graphics"
+
+//#use "Libs/LinkedList"
+
+Class SAsset
+	Static Var List 
+	ReadOnly String File
+	ReadOnly String Tag
+	ReadOnly Delegate LoadFunc	
+	ReadOnly Var Options
+	Constructor(_LoadFunc,String _File,String _Tag,Infinity)
+		List = List || {}
+		LoadFunc,File,Tag = _LoadFunc,_File,_Tag
+		List += Self
+		Options = {Infinity}
+	End
+End
+
+Plua Disclaimer
+Plua STime_For_ShowDisclaimer
+plua H_For_Disclaimer
+Void ShowDisclaimer()	
+	LocExtern STime "STime_For_ShowDisclaimer"
+	LocExtern H "H_For_Disclaimer"
+	LocExtern W "Scyndi.Class.Graphics.Width"
+	If !Disclaimer
+		Return
+	End
+	STime = STime || os.time()
+	H = H || math.floor( (Graphics.Width / Disclaimer.Width) * Disclaimer.Height)
+	Disclaimer.Stretch(0,Graphics.Height - (H div 2),W,H)
+End	
+
+
+#macro LHot_Center 1
+
+plua L_IMG(String F, String T, O)
+	Hot:=0
+	X:=0
+	Y:=0
+	Hot,X,Y = O[1] || 0, O[2] || 0, O[3] || 0	
+	printf("\x1b[93mLoading Image: \x1b[95m%s\t\x1b[30,47m %s\x1b[37,40m\n",F,T)
+	ret:=LoadImage(F,T)
+	switch Hot
+		case 0
+		case LHot_Center
+			ret.HotCenter
+		default
+			Lua.error("Unknown Hot")
+	end
+end	
+
+Void LI(String F, String T, Int H=0, int X=0, int Y=0)
+	New SAsset(L_IMG,F,T,H,X,Y)
+End
+
+
+Init
+	
+End
+
+
+
+Global Void MainFlow()
+	ShowDisclaimer()
+	Print("Test")
+	Sys.Quit(1)
+End
