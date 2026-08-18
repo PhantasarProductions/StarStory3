@@ -58,6 +58,10 @@ Void LI(String F, String T, Int H=0, int X=0, int Y=0)
 End
 
 
+Init
+	
+End
+
 
 
 Global Void MainFlow()
